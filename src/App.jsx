@@ -21,8 +21,9 @@ function App() {
 
   return (
     <>
+    <Header/>
       <Routes>
-        <Header/>
+        
         {/* common */}
         <Route path='/' element={<LandingPage />}></Route>
         <Route path='/user-login' element={<UserLogin />}></Route>
