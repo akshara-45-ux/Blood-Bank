@@ -1,4 +1,3 @@
-
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import LandingPage from './Common/Pages/LandingPage'
@@ -17,39 +16,33 @@ import Header from './Common/Components/Header'
 import Footer from './Common/Components/Footer'
 
 function App() {
-
-
   return (
     <>
+      <Header />
+
       <Routes>
-        <Header/>
         {/* common */}
-        <Route path='/' element={<LandingPage />}></Route>
-        <Route path='/user-login' element={<UserLogin />}></Route>
-        <Route path='/admin-login' element={<AdminLogin />}></Route>
-        <Route path='/user-register' element={<UserRegister />}></Route>
-        <Route path='/*' element={<Pnf />}></Route>
-
-
+        <Route path='/' element={<LandingPage />} />
+        <Route path='/user-login' element={<UserLogin />} />
+        <Route path='/admin-login' element={<AdminLogin />} />
+        <Route path='/user-register' element={<UserRegister />} />
 
         {/* admin */}
-        <Route path='/admin-dashboard' element={<AdminDashboard />}></Route>
-        <Route path='/bloodstock-page' element={<BloodStockPage />}></Route>
-        <Route path='/request-page' element={<Requestpage />}></Route>
-
-
+        <Route path='/admin-dashboard' element={<AdminDashboard />} />
+        <Route path='/bloodstock-page' element={<BloodStockPage />} />
+        <Route path='/request-page' element={<Requestpage />} />
 
         {/* user */}
-        <Route path='/donateblood-page' element={<DonateBloodPage />}></Route>
+        <Route path='/donateblood-page' element={<DonateBloodPage />} />
+        <Route path='/myrequest-page' element={<MyRequestPage />} />
+        <Route path='/requestblood-page' element={<RequestBloodPage />} />
+        <Route path='/user-dashboard' element={<UserDashboard />} />
 
-        <Route path='/myrequest-page' element={<MyRequestPage />}></Route>
-
-        <Route path='/requestblood-page' element={<RequestBloodPage />}></Route>
-
-        <Route path='/user-dashboard' element={<UserDashboard/>}></Route>
-
+        {/* page not found */}
+        <Route path='/*' element={<Pnf />} />
       </Routes>
-      <Footer/>
+
+      <Footer />
     </>
   )
 }
