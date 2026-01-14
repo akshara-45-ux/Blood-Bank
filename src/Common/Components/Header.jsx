@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar'
@@ -24,8 +24,8 @@ function Header() {
       variant="outline-light"
       align="end"
     >
-      <Dropdown.Item className="text-dark">Admin</Dropdown.Item>
-      <Dropdown.Item className="text-dark">User</Dropdown.Item>
+      <Dropdown.Item as={Link} to="/admin-login" className="text-dark">Admin</Dropdown.Item>
+      <Dropdown.Item as={Link} to="/user-login"  className="text-dark">User</Dropdown.Item>
      
     </DropdownButton>
          
