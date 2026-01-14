@@ -47,8 +47,9 @@ function App() {
         <Route path='/requestblood-page' element={<RequestBloodPage />}></Route>
 
         <Route path='/user-dashboard' element={<UserDashboard/>}></Route>
-<Footer/>
+
       </Routes>
+      <Footer/>
     </>
   )
 }
