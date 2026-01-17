@@ -24,13 +24,8 @@ function Header() {
       variant="outline-light"
       align="end"
     >
-<<<<<<< Updated upstream
-      <Dropdown.Item as={Link} to="/admin-login" className="text-dark">Admin</Dropdown.Item>
-      <Dropdown.Item as={Link} to="/user-login"  className="text-dark">User</Dropdown.Item>
-=======
       <Dropdown.Item as={NavLink} to={"/admin-login"} className="text-dark">Admin</Dropdown.Item>
       <Dropdown.Item as={NavLink} to={"/user-login"} className="text-dark">User</Dropdown.Item>
->>>>>>> Stashed changes
      
     </DropdownButton>
          
