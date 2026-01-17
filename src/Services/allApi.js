@@ -19,3 +19,8 @@ export const editBloodAPI = async (id) => {
 export const updateBloodAPI = async (id, updatedData) => {
   return await commonAPI("PUT", `${BASE_URL}/blood-data/${id}`, updatedData);
 };
+
+export const statusAPI = async (id, updatedData) => {
+  
+  return await commonAPI("PATCH", `${BASE_URL}/blood-data/${id}`, updatedData);
+};
