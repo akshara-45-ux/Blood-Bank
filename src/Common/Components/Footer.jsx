@@ -10,9 +10,9 @@ function Footer() {
 
           {/* COLUMN 1 */}
           <Col md={4} className="mb-3">
-            <h5 style={{ marginBottom: '15px' }}>LifeSaver Blood Bank</h5>
+            <h5 style={{ marginBottom: '15px' }}> BloodNet  Bank</h5>
             <p style={{ fontSize: '14px', lineHeight: '1.8', color: '#cccccc' }}>
-              LifeSaver Blood Bank is committed to connecting donors, hospitals,
+              BloodNet Blood Bank is committed to connecting donors, hospitals,
               and patients to ensure timely access to safe and life-saving blood
               for everyone in need.
             </p>
@@ -42,7 +42,7 @@ function Footer() {
               <FaPhoneAlt style={{ marginRight: '8px' }} />
               +91 98765 43210 <br />
               <FaEnvelope style={{ marginRight: '8px' }} />
-              lifesaver@bloodbank.com
+              bloodnet@bloodbank.com
             </p>
           </Col>
 
@@ -55,7 +55,7 @@ function Footer() {
             style={{ borderTop: '1px solid #444' }}
           >
             <small style={{ color: '#aaaaaa' }}>
-              © {new Date().getFullYear()} LifeSaver Blood Bank. All Rights Reserved.
+              © {new Date().getFullYear()} Blood Net. All Rights Reserved.
             </small>
           </Col>
         </Row>
