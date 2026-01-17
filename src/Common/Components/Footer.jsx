@@ -10,7 +10,7 @@ function Footer() {
 
           {/* COLUMN 1 */}
           <Col md={4} className="mb-3">
-            <h5 style={{ marginBottom: '15px' }}>LifeSaver Blood Bank</h5>
+            <h5 style={{ marginBottom: '15px' }}> BloodNet  Bank</h5>
             <p style={{ fontSize: '14px', lineHeight: '1.8', color: '#cccccc' }}>
               BloodNet Blood Bank is committed to connecting donors, hospitals,
               and patients to ensure timely access to safe and life-saving blood
