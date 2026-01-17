@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
+import { addBloodAPI } from '../../Services/allApi';
+
 
 const RequestBloodPage = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +11,8 @@ const RequestBloodPage = () => {
     location: '',
     date: ''
   });
+  console.log(formData);
+  
 
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
@@ -20,7 +24,7 @@ const RequestBloodPage = () => {
     e.preventDefault();
     console.log("Request Submitted:", formData);
     alert("Blood request submitted successfully!");
-    // You can add your API call logic here
+    addBloodAPI(formData)
   };
 
   return (
