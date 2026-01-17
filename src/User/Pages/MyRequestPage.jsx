@@ -1,50 +1,77 @@
-import React from 'react'
-import { Table, Card} from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from "react";
+import { Table, Card, Spinner } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { getMyBloodRequestsAPI } from "../../Services/allApi";
+
 function MyRequestPage() {
+   const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Logged-in user (JSON Server style)
+  const userId = JSON.parse(localStorage.getItem("user"))?.id;
+
+  const fetchMyRequests = async () => {
+    if (!userId) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const result = await getMyBloodRequestsAPI(userId);
+      setRequests(result.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchMyRequests();
+  }, []);
+
   return (
-    <>
-   
- 
-
-    <Card>
+    <Card className="shadow">
       <Card.Body>
-        <Card.Title className="mb-3 text-center">My Blood Requests</Card.Title>
- <Link to="/user-dashboard"
-  variant="secondary" className="mb-3 mt-6">
- ← Back
-    </Link>
-        <Table striped bordered hover responsive>
-          <thead className="table-dark">
-            <tr>
-              <th>Blood Group</th>
-              <th>Request Date</th>
-            </tr>
-          </thead>
+        <Card.Title className="mb-3 text-center">
+          My Blood Request History
+        </Card.Title>
 
-          <tbody>
-            <tr>
-              <td>A+</td>
-              <td>10 Jan 2026</td>
-              
-            </tr>
-            <tr>
-              <td>B+</td>
-              <td>05 Jan 2026</td>
-             
-            </tr>
-            <tr>
-              <td>O-</td>
-              <td>28 Dec 2025</td>
-              
-            </tr>
-          </tbody>
-        </Table>
+        <Link to="/user-dashboard" className="mb-3 d-inline-block">
+          ← Back
+        </Link>
+
+        {loading ? (
+          <div className="text-center my-4">
+            <Spinner animation="border" variant="danger" />
+          </div>
+        ) : requests.length === 0 ? (
+          <p className="text-center text-muted">
+            No blood requests found
+          </p>
+        ) : (
+          <Table striped bordered hover responsive>
+            <thead className="table-dark">
+              <tr>
+                <th>Blood Group</th>
+                <th>Request Date</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {requests.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.bloodGroup}</td>
+                  <td>
+                    {new Date(item.date).toLocaleDateString()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
       </Card.Body>
     </Card>
-    
-    </>
-  )
+  );
 }
-
 export default MyRequestPage
