@@ -1,16 +1,39 @@
-import React from 'react';
-import { Card, Button, Nav, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Card, Button, Nav, Row, Col } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import { getAllStockAPI } from "../../Services/allApi";
 
 function UserDashboard() {
-  return (
-    <div className="d-flex" style={{ minHeight: '100vh' }}>
-      {/* Sidebar */}
-      <div className="bg-danger text-white p-4" style={{ width: '240px' }}>
-        {/* Sidebar Heading */}
-        {/* <h4 className="mb-4 text-center">Dashboard</h4> */}
+  const [bloodStock, setBloodStock] = useState([]);
+  const navigate = useNavigate();
 
-        {/* Navigation Buttons using Link */}
+  // Fetch admin-added blood stock
+  useEffect(() => {
+    const fetchBloodStock = async () => {
+      try {
+        const response = await getAllStockAPI(); // fetch from added-blood
+        if (response.status === 200) {
+          setBloodStock(response.data); // set stock to state
+        }
+      } catch (error) {
+        console.error("Error fetching blood stock:", error);
+      }
+    };
+
+    fetchBloodStock();
+  }, []);
+
+  // Logout handler
+  const handleLogout = () => {
+    sessionStorage.removeItem("user"); // remove logged-in user
+    navigate("/user-login");
+  };
+
+  return (
+    <div className="d-flex" style={{ minHeight: "100vh" }}>
+      {/* Sidebar */}
+      <div className="bg-danger text-white p-4" style={{ width: "240px" }}>
+        <h4 className="mb-4 text-center">User Dashboard</h4>
         <Nav className="flex-column gap-2">
           <Button
             as={Link}
@@ -31,8 +54,7 @@ function UserDashboard() {
           </Button>
 
           <Button
-            as={Link}
-            to="/user-login"
+            onClick={handleLogout}
             variant="danger"
             className="text-white w-100"
           >
@@ -43,33 +65,32 @@ function UserDashboard() {
 
       {/* Main Content */}
       <div className="flex-grow-1 p-4 bg-light">
-       
+        <h3 className="mb-4">Available Blood Stock</h3>
 
         <Row className="g-4">
-          <Col md={6}>
-            <Card>
-              <Card.Body>
-                <Card.Title>Available Blood</Card.Title>
-                <Card.Text>Blood Group:</Card.Text>
-                <Card.Text>Units:</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-
-          <Col md={6}>
-            <Card>
-              <Card.Body>
-                <Card.Title>Available Blood</Card.Title>
-                <Card.Text>Blood Group:</Card.Text>
-                <Card.Text>Units:</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
+          {bloodStock.length > 0 ? (
+            bloodStock.map((item) => (
+              <Col md={6} key={item.id}>
+                <Card>
+                  <Card.Body>
+                    <Card.Title>Blood Group: {item.group}</Card.Title>
+                    <Card.Text>Units Available: {item.units}</Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))
+          ) : (
+            <p>No blood stock available currently.</p>
+          )}
         </Row>
 
         <div className="d-flex gap-3 mb-4 mt-5 justify-content-center">
-          <Button variant="danger">Request Blood</Button>
-          <Button variant="success">Donate Blood</Button>
+          <Link to="/requestblood-page">
+            <Button variant="danger">Request Blood</Button>
+          </Link>
+          <Link to="/donateblood-page">
+            <Button variant="success">Donate Blood</Button>
+          </Link>
         </div>
       </div>
     </div>
@@ -77,3 +98,4 @@ function UserDashboard() {
 }
 
 export default UserDashboard;
+
