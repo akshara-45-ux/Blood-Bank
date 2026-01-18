@@ -1,70 +1,29 @@
 import React, { useState } from "react";
-import { Nav, Card, Button, Alert } from "react-bootstrap";
+import { Nav, Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import {
-  addBloodAPI,
-  getAllBloodAPI,
-  updateBloodAPI,
-} from "../../Services/allApi";
+import { addStockAPI } from "../../Services/allApi";
 
 function AdminDashboard() {
   const [group, setGroup] = useState("");
   const [units, setUnits] = useState("");
-  const [status, setStatus] = useState(null);
 
-  // CREATE / ADD logic
-  const handleAddBlood = async () => {
-    if (!group || !units) {
-      setStatus("error");
-      return;
-    }
+  const handleAdd = async () => {
+    if (!group || !units) return;
 
-    try {
-      const result = await getAllBloodAPI();
+    await addStockAPI({
+      group: group.toUpperCase(),
+      units: Number(units),
+    });
 
-      if (result.status === 200) {
-        const existingBlood = result.data.find(
-          (item) =>
-            item.group.toUpperCase() === group.toUpperCase()
-        );
-
-        if (existingBlood) {
-          // UPDATE (add to old stock)
-          const updatedUnits =
-            Number(existingBlood.units) + Number(units);
-
-          await updateBloodAPI(existingBlood.id, {
-            group: existingBlood.group,
-            units: updatedUnits,
-          });
-        } else {
-          // CREATE new blood group
-          await addBloodAPI({
-            group: group.toUpperCase(),
-            units: Number(units),
-          });
-        }
-
-        setStatus("success");
-        setGroup("");
-        setUnits("");
-      } else {
-        setStatus("error");
-      }
-    } catch (err) {
-      console.log(err);
-      setStatus("error");
-    }
-
-    setTimeout(() => setStatus(null), 3000);
+    setGroup("");
+    setUnits("");
+    alert("Blood stock added");
   };
 
   return (
-    <div className="d-flex" style={{ minHeight: "100vh" }}>
-      {/* Sidebar */}
+    <div className="d-flex min-vh-100">
       <div className="bg-danger text-white p-4" style={{ width: "240px" }}>
-        <h3 className="text-center mb-4">Dashboard</h3>
-
+        <h3 className="mb-4">Dashboard</h3>
         <Nav className="flex-column gap-2">
           <Nav.Link as={Link} to="/admin-dashboard" className="text-white">
             Add Blood
@@ -78,50 +37,27 @@ function AdminDashboard() {
         </Nav>
       </div>
 
-      {/* Main Content */}
-      <div className="flex-grow-1 d-flex justify-content-center align-items-center bg-light p-4">
-        <Card style={{ width: "400px" }} className="shadow">
+      <div className="flex-grow-1 d-flex justify-content-center align-items-center">
+        <Card style={{ width: 400 }}>
           <Card.Body>
-            <Card.Title className="text-center mb-4">
-              Add Blood Stock
-            </Card.Title>
+            <Card.Title>Add Blood Stock</Card.Title>
 
-            {status === "success" && (
-              <Alert variant="success">
-                Blood stock updated successfully
-              </Alert>
-            )}
-            {status === "error" && (
-              <Alert variant="danger">
-                Please enter valid data
-              </Alert>
-            )}
+            <input
+              className="form-control mb-3"
+              placeholder="Blood Group"
+              value={group}
+              onChange={(e) => setGroup(e.target.value)}
+            />
 
-            <div className="mb-3">
-              <label className="form-label">Blood Group</label>
-              <input
-                className="form-control"
-                placeholder="O+"
-                value={group}
-                onChange={(e) => setGroup(e.target.value)}
-              />
-            </div>
+            <input
+              type="number"
+              className="form-control mb-3"
+              placeholder="Units"
+              value={units}
+              onChange={(e) => setUnits(e.target.value)}
+            />
 
-            <div className="mb-4">
-              <label className="form-label">Units to Add</label>
-              <input
-                type="number"
-                className="form-control"
-                value={units}
-                onChange={(e) => setUnits(e.target.value)}
-              />
-            </div>
-
-            <Button
-              variant="danger"
-              className="w-100"
-              onClick={handleAddBlood}
-            >
+            <Button variant="danger" className="w-100" onClick={handleAdd}>
               Add
             </Button>
           </Card.Body>

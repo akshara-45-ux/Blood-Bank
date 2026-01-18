@@ -62,4 +62,48 @@ export const loginAPI = async (username, password) => {
   
     return await commonAPI("GET", `${BASE_URL}/users?username=${username}&password=${password}`, "");
 };
- 
+
+export const addStockAPI = async (reqBody) => {
+  return await commonAPI(
+    "POST",
+    `${BASE_URL}/added-blood`,
+    reqBody
+  );
+};
+
+// Added-Blood//
+
+// Get all blood stock
+export const getAllStockAPI = async () => {
+  return await commonAPI(
+    "GET",
+    `${BASE_URL}/added-blood`
+  );
+};
+
+// Update blood stock (replace group & units)
+export const updateStockAPI = async (id, updatedData) => {
+  return await commonAPI(
+    "PUT",
+    `${BASE_URL}/added-blood/${id}`,
+    updatedData
+  );
+};
+
+// Delete blood stock
+export const deleteStockAPI = async (id) => {
+  return await commonAPI(
+    "DELETE",
+    `${BASE_URL}/added-blood/${id}`
+  );
+};
+
+
+// ================= ADMIN LOGIN =================
+export const adminLoginAPI = async (username, password) => {
+  return await commonAPI(
+    "GET",
+    `${BASE_URL}/admins?username=${username}&password=${password}`
+  );
+};
+

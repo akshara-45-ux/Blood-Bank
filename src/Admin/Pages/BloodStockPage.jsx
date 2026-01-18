@@ -9,15 +9,15 @@ import {
   Form,
 } from "react-bootstrap";
 import {
-  getAllBloodAPI,
-  deleteBloodAPI,
-  updateBloodAPI,
+  getAllStockAPI,
+  updateStockAPI,
+  deleteStockAPI,
 } from "../../Services/allApi";
 
 function BloodStockPage() {
-  const [bloodStock, setBloodStock] = useState([]);
+  const [stock, setStock] = useState([]);
   const [show, setShow] = useState(false);
-  const [editData, setEditData] = useState({
+  const [edit, setEdit] = useState({
     id: "",
     group: "",
     units: "",
@@ -25,9 +25,11 @@ function BloodStockPage() {
 
   /* ================= READ ================= */
   const fetchStock = async () => {
-    const result = await getAllBloodAPI();
-    if (result.status === 200) {
-      setBloodStock(result.data);
+    const res = await getAllStockAPI();
+    if (res.status === 200) {
+      // ✅ filter invalid records
+      const validData = res.data.filter(item => item.id);
+      setStock(validData);
     }
   };
 
@@ -35,52 +37,41 @@ function BloodStockPage() {
     fetchStock();
   }, []);
 
-  /* ================= DELETE ================= */
-  const handleDelete = async (id) => {
-    await deleteBloodAPI(id);
-    fetchStock();
-  };
-
-  /* ================= OPEN UPDATE MODAL ================= */
-  const handleUpdateClick = (item) => {
-    setEditData({
-      id: item.id,
-      group: item.group,
-      units: item.units,
-    });
-    setShow(true);
-  };
-
-  /* ================= UPDATE (REPLACE DATA) ================= */
+  /* ================= UPDATE ================= */
   const handleUpdate = async () => {
-    if (!editData.group || !editData.units) return;
+    if (!edit.id || !edit.group || !edit.units) {
+      console.error("Invalid update data");
+      return;
+    }
 
-    await updateBloodAPI(editData.id, {
-      group: editData.group.toUpperCase(),
-      units: Number(editData.units),
+    await updateStockAPI(edit.id, {
+      group: edit.group.toUpperCase(),
+      units: Number(edit.units),
     });
 
     setShow(false);
     fetchStock();
   };
 
+  /* ================= DELETE ================= */
+  const handleDelete = async (id) => {
+    if (!id) {
+      console.error("Invalid ID, cannot delete");
+      return;
+    }
+    await deleteStockAPI(id);
+    fetchStock();
+  };
+
   return (
     <div className="p-4 bg-light min-vh-100">
-      {/* Heading */}
-      <div className="mb-5 text-center">
-        <h2 className="fw-bold text-danger">Blood Stock</h2>
-        <p className="text-muted">
-          Update blood group and quantity
-        </p>
-      </div>
-
       <Row className="g-4">
-        {bloodStock.map((item) => (
+        {stock.map((item) => (
           <Col md={4} key={item.id}>
             <Card className="shadow h-100">
               <Card.Body className="d-flex flex-column">
                 {/* Header */}
-                <div className="d-flex justify-content-between mb-3">
+                <div className="d-flex justify-content-between align-items-center mb-3">
                   <h6>Blood Group</h6>
                   <Badge bg="danger">{item.group}</Badge>
                 </div>
@@ -88,24 +79,25 @@ function BloodStockPage() {
                 {/* Units */}
                 <div className="text-center my-4">
                   <h6 className="text-muted">Units Available</h6>
-                  <h1 className="fw-bold text-danger">
-                    {item.units}
-                  </h1>
+                  <h2 className="fw-bold">{item.units}</h2>
                 </div>
 
-                {/* Buttons */}
+                {/* Actions */}
                 <div className="mt-auto d-flex justify-content-center gap-2">
                   <Button
                     size="sm"
-                    variant="outline-warning"
-                    onClick={() => handleUpdateClick(item)}
+                    variant="warning"
+                    onClick={() => {
+                      setEdit(item);
+                      setShow(true);
+                    }}
                   >
                     Update
                   </Button>
 
                   <Button
                     size="sm"
-                    variant="outline-danger"
+                    variant="danger"
                     onClick={() => handleDelete(item.id)}
                   >
                     Delete
@@ -127,10 +119,9 @@ function BloodStockPage() {
           <Form.Group className="mb-3">
             <Form.Label>Blood Group</Form.Label>
             <Form.Control
-              type="text"
-              value={editData.group}
+              value={edit.group}
               onChange={(e) =>
-                setEditData({ ...editData, group: e.target.value })
+                setEdit({ ...edit, group: e.target.value })
               }
             />
           </Form.Group>
@@ -139,9 +130,9 @@ function BloodStockPage() {
             <Form.Label>Units</Form.Label>
             <Form.Control
               type="number"
-              value={editData.units}
+              value={edit.units}
               onChange={(e) =>
-                setEditData({ ...editData, units: e.target.value })
+                setEdit({ ...edit, units: e.target.value })
               }
             />
           </Form.Group>
