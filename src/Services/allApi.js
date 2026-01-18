@@ -37,7 +37,6 @@ export const getMyBloodRequestsAPI = async (userId) => {
 };
 
 
-import { serverURL } from "./serverURL";
 
 
 // // /// /// /// /// /// /// sign up // /// // // // / // 
@@ -46,13 +45,13 @@ import { serverURL } from "./serverURL";
 // Register user login
 
 export const registerAPI = async(reqbody)=>{
-    return await commonAPI("POST",`${serverURL}/users`,reqbody); 
+    return await commonAPI("POST",`${BASE_URL}/users`,reqbody); 
 
 }
 
 // Check if email exists
 export const emailCheckAPI = async (email) => {
-    return await commonAPI("GET", `${serverURL}/users?email=${email}`, "");
+    return await commonAPI("GET", `${BASE_URL}/users?email=${email}`, "");
 };
 
 // // /// /// ///// /// // //  login // /// /// /// // // 
@@ -61,6 +60,6 @@ export const emailCheckAPI = async (email) => {
 
 export const loginAPI = async (username, password) => {
   
-    return await commonAPI("GET", `${serverURL}/users?username=${username}&password=${password}`, "");
+    return await commonAPI("GET", `${BASE_URL}/users?username=${username}&password=${password}`, "");
 };
  
