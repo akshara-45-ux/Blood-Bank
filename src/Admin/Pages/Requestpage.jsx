@@ -39,10 +39,9 @@ const RequestPage = () => {
     }
   };
 
-  
   const handleReset = async (id, currentData) => {
     try {
-      const updatedData = { ...currentData, status: "" }; 
+      const updatedData = { ...currentData, status: "" };
       const result = await updateBloodAPI(id, updatedData);
       if (result.status >= 200 && result.status < 300) {
         fetchRequests();
@@ -56,7 +55,7 @@ const RequestPage = () => {
     try {
       const result = await deleteBloodAPI(id);
       if (result.status >= 200 && result.status < 300) {
-        fetchRequests()
+        fetchRequests();
       }
     } catch (err) {
       console.error("Deletion failed", err);
@@ -82,7 +81,7 @@ const RequestPage = () => {
       <Row>
         {requests.length > 0 ? (
           requests.map((request) => (
-            <Col key={request.id || request._id} lg={4} md={6} className="mb-4">
+            <Col key={request.id} lg={4} md={6} className="mb-4">
               <Card className="shadow-sm border-0">
                 <Card.Body>
                   <div className="d-flex justify-content-between align-items-start mb-2">
@@ -111,32 +110,30 @@ const RequestPage = () => {
 
                   <Stack direction="row" spacing={2} justifyContent="center">
                     {request.status === "Accepted" ? (
-                      
                       <Chip
                         label="Accepted"
                         color="success"
                         variant="filled"
                         className="w-100"
                         onClick={() => handleReset(request.id, request)}
-                        sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#2e7d32' } }}
+                        sx={{
+                          cursor: "pointer",
+                          "&:hover": { backgroundColor: "#2e7d32" },
+                        }}
                       />
                     ) : (
                       <>
                         <Button
                           variant="outline-danger"
                           size="sm"
-                          onClick={() =>
-                            handleReject(request.id || request._id)
-                          }
+                          onClick={() => handleReject(request.id)}
                         >
                           Reject
                         </Button>
                         <Button
                           variant="danger"
                           size="sm"
-                          onClick={() =>
-                            handleAccept(request.id || request._id, request)
-                          }
+                          onClick={() => handleAccept(request.id, request)}
                         >
                           Accept
                         </Button>
