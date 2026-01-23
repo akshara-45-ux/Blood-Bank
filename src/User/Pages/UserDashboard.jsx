@@ -88,9 +88,7 @@ function UserDashboard() {
           <Link to="/requestblood-page">
             <Button variant="danger">Request Blood</Button>
           </Link>
-          <Link to="/donateblood-page">
-            <Button variant="success">Donate Blood</Button>
-          </Link>
+          
         </div>
       </div>
     </div>
